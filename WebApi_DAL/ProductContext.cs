@@ -20,11 +20,8 @@ namespace WebApi_DAL
             base.OnModelCreating(modelBuilder);
         }
 
-        internal Product Find(int id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public DbSet<Product> Product { get; set; }
+
+        public DbSet<Product> Products { get; set; }  
     }
 }

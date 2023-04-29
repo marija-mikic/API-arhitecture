@@ -7,9 +7,9 @@ using WebApi_DAL.Models;
 
 namespace WebApi_DAL.Repository
 {
-    public interface IProductService
+    public interface IProductServices
     {
-        IEnumerable<Product> GetAll();
+        Task<IEnumerable<Product>> GetAll();
         bool Add(Product model);
         bool Update(Product model);
         bool Delete(int Id);

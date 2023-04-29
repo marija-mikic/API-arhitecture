@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WebApi_BAL\WebApi_BAL.csproj" />
     <ProjectReference Include="..\WebApi_DAL\WebApi_DAL.csproj" />
   </ItemGroup>

@@ -11,8 +11,8 @@ using WebApi_DAL;
 namespace WebApi_DAL.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20230428163914_init")]
-    partial class init
+    [Migration("20230429160333_init")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace WebApi_DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 #pragma warning restore 612, 618
         }

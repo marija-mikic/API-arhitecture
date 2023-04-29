@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,9 @@ namespace WebApi_DAL.Services
 {
 
 
-    public class ProductServices : IProductService
+    public class ProductServices:IProductServices
     {
         private readonly ProductContext context;
-
         public ProductServices(ProductContext context)
         {
             this.context = context;
@@ -21,7 +21,7 @@ namespace WebApi_DAL.Services
         public bool Add(Product model)
         {
             try { 
-            context.Product.Add(model);
+            context.Products.Add(model);
             context.SaveChanges();
             return true;
             }
@@ -46,21 +46,31 @@ namespace WebApi_DAL.Services
             }
         }
 
-        public IEnumerable<Product> GetAll()
+        public async Task<IEnumerable<Product>> GetAll()
+        {
+            if (context.Products == null)
+            {
+                return NotFound();
+
+            }
+            return await context.Products.ToListAsync();
+        }
+
+        private IEnumerable<Product> NotFound()
         {
             throw new NotImplementedException();
         }
 
         public Product GetById(int Id)
         {
-            return context.Find(Id);
+            return context.Products.Find(Id);
         }
 
         public bool Update(Product model)
         {
             try
             {
-                context.Update(model);
+                context.Products.Update(model);
                 context.SaveChanges();
                 return true;
             }
