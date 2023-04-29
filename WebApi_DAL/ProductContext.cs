@@ -9,11 +9,11 @@ using WebApi_DAL.Models;
 
 namespace WebApi_DAL
 {
-    public class ProductContext:DbContext
+    public class ProductContext : DbContext
     {
         public ProductContext(DbContextOptions<ProductContext> options) : base(options)
         {
-            
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +22,6 @@ namespace WebApi_DAL
 
 
 
-        public DbSet<Product> Products { get; set; }  
+        public DbSet<Product> Products { get; set; }
     }
 }

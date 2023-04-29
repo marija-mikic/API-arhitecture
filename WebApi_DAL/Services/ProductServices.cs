@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi_DAL.Models;
@@ -11,7 +12,7 @@ namespace WebApi_DAL.Services
 {
 
 
-    public class ProductServices:IProductServices
+    public class ProductServices:IProductServices 
     {
         private readonly ProductContext context;
         public ProductServices(ProductContext context)
@@ -20,12 +21,14 @@ namespace WebApi_DAL.Services
         }
         public bool Add(Product model)
         {
-            try { 
-            context.Products.Add(model);
-            context.SaveChanges();
-            return true;
+            try
+            {
+                context.Products.Add(model);
+                context.SaveChanges();
+                return true;
             }
-            catch (Exception ){
+            catch (Exception)
+            {
                 return false;
             }
         }
@@ -33,7 +36,7 @@ namespace WebApi_DAL.Services
         {
             try
             {
-                var data= this.GetById(Id);
+                var data = this.GetById(Id);
                 if (data == null)
                     return false;
                 context.Remove(data);
@@ -66,11 +69,16 @@ namespace WebApi_DAL.Services
             return context.Products.Find(Id);
         }
 
-        public bool Update(Product model)
+
+
+        public bool Update(int id, Product product)
         {
             try
             {
-                context.Products.Update(model);
+                var data = this.GetById(product.Id);
+                if (data == null)
+                    return false;
+                context.Update(product);
                 context.SaveChanges();
                 return true;
             }
@@ -79,5 +87,11 @@ namespace WebApi_DAL.Services
                 return false;
             }
         }
+
+
+
+
+
     }
+
 }
