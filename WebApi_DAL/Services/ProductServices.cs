@@ -71,21 +71,17 @@ namespace WebApi_DAL.Services
 
 
 
-        public bool Update(int id, Product product)
+        public async Task  Update(int id)
         {
-            try
-            {
-                var data = this.GetById(product.Id);
+             
+                var data = this.GetById(id);
                 if (data == null)
-                    return false;
-                context.Update(product);
+
+                    context.Update(id);
                 context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            
+          
         }
 
 

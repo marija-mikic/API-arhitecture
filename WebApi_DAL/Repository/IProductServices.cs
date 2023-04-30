@@ -10,7 +10,7 @@ namespace WebApi_DAL.Repository
         bool Delete(int Id);
         Product GetById(int Id);
 
-       bool Update(int id, Product product);
+       Task Update(int id );
          
     }
 }

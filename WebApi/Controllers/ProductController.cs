@@ -66,33 +66,32 @@ namespace WebApi.Controllers
         //   return Ok();
         // }
 
-        [HttpPatch(nameof(PutProduct))]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+
+        [HttpPut]
+       public async Task <ActionResult<Product>> Update(  Product product )
         {
-            if (id != product.Id)
+             _productContext.Products.Add(product);
+           await _productContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetProductId), new {id= product.Id}, product);
+                      
+       }
+        [HttpPut(nameof(UpdateProduct))]
+        public async Task<ActionResult>UpdateProduct(int id, Product product) 
+        {
+            if (id!=product.Id)
             {
                 return BadRequest();
             }
-
             _productContext.Entry(product).State = EntityState.Modified;
-
             try
             {
                 await _productContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
+            }catch(Exception ex)
             {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
-            return NoContent();
+            return Ok();
         }
 
 
