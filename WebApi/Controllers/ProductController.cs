@@ -67,7 +67,7 @@ namespace WebApi.Controllers
         // }
 
 
-        [HttpPut]
+        [HttpPost]
        public async Task <ActionResult<Product>> Update(  Product product )
         {
              _productContext.Products.Add(product);
@@ -76,7 +76,7 @@ namespace WebApi.Controllers
             return CreatedAtAction(nameof(GetProductId), new {id= product.Id}, product);
                       
        }
-        [HttpPut(nameof(UpdateProduct))]
+        [HttpPut("{id}")]
         public async Task<ActionResult>UpdateProduct(int id, Product product) 
         {
             if (id!=product.Id)
