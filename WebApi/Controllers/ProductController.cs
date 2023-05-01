@@ -37,7 +37,7 @@ namespace WebApi.Controllers
         
 
          
-            [HttpGet("{id}")]
+            [HttpGet(nameof(GetById))]
             [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
             [ProducesResponseType(StatusCodes.Status404NotFound)]
             [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -75,11 +75,11 @@ namespace WebApi.Controllers
 
 
 
-        [HttpPut]
+        [HttpPut("UpdateProduct")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, [FromBody] Product product)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
         {
             if (id <= 0)
                 return BadRequest("Not a valid   id");
