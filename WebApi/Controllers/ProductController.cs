@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Services.WebApi;
 using WebApi_DAL;
 using WebApi_DAL.Models;
+using WebApi_DAL.Pagination;
 using WebApi_DAL.Repository;
 
 namespace WebApi.Controllers
@@ -98,15 +100,18 @@ namespace WebApi.Controllers
         {
             return (_productContext.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
-
+         
+         
     }
 
 
+}
 
 
 
-    }
+
+
+    
 
 
 

@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+
 using WebApi_DAL.Models;
 using WebApi_DAL.Repository;
 
@@ -98,7 +93,10 @@ namespace WebApi_DAL.Services
 
 
 
-        }   
+        }
+         
+
+
     }
 
 }
