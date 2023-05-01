@@ -1,10 +1,12 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
-using WebApi.Controllers;
 using WebApi_DAL;
+using WebApi_DAL.Models;
 using WebApi_DAL.Repository;
 using WebApi_DAL.Services;
+using WebApi_BAL.Validator;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +34,7 @@ optionsBuilder => optionsBuilder.MigrationsAssembly("WebApi_DAL")));
 
  
 builder.Services.AddScoped<IProductServices, ProductServices>();
- 
+builder.Services.AddScoped<IValidator<Product>, ProductValidator>(); 
 
 var app = builder.Build();
 

@@ -8,9 +8,9 @@ namespace WebApi_DAL.Repository
         bool Add(Product model);
 
         bool Delete(int Id);
-        Product GetById(int Id);
+       
 
-       Task Update(int id );
-         
+        Task Update(int id, Product product );
+        Task<Product> GetById(int id);
     }
 }

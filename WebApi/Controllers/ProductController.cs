@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi_DAL;
 using WebApi_DAL.Models;
@@ -13,12 +14,14 @@ namespace WebApi.Controllers
 
         private readonly IProductServices _productService;
         private readonly ProductContext _productContext;
+        private readonly IValidator<Product> _validator;
 
 
-        public ProductController(IProductServices productService, ProductContext productContext)
+        public ProductController(IProductServices productService, ProductContext productContext, IValidator<Product> validator )
         {
-            _productService = productService;
+            _productService = productService; 
             _productContext = productContext;
+            _validator = validator;
         }
         [HttpGet(nameof(GetProducts))]
         public async Task<IActionResult> GetProducts()
@@ -31,67 +34,63 @@ namespace WebApi.Controllers
             }
             return Ok(products);
         }
-        [HttpGet("{id}")]
+        
 
-        public Task<ActionResult<Product>> GetProductId(int id)
-        {
-            var product = _productService.GetById(id);
-
-            if (product == null)
+         
+            [HttpGet("{id}")]
+            [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Product))]
+            [ProducesResponseType(StatusCodes.Status404NotFound)]
+            [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+            public async Task<ActionResult<Product>> GetById(int id)
             {
-                return Task.FromResult<ActionResult<Product>>(NotFound());
-            }
-            return Task.FromResult<ActionResult<Product>>(Ok(product));
+                var hotel = await _productService.GetById(id);
 
-        }
+                if (hotel is null)
+                {
+                    return NotFound();
+                }
+                return Ok(hotel);
+            }
+
+            [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost(nameof(AddProduct))]
-        public IActionResult AddProduct(Product product)
+        public async Task<  IActionResult> AddProduct([FromBody] Product product)
         {
-            if (product != null)
+            FluentValidation.Results.ValidationResult validationResult = await _validator.ValidateAsync(product);
+
+            if (validationResult.IsValid)
             {
                 _productService.Add(product);
                 return Ok("create succesfully");
             }
             else
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
             }
 
 
         }
 
-        //public IActionResult Update([FromBody] Product product, [FromRoute] int id)
-        // {
-        //   _productService.Update(id,product);
-        //   return Ok();
-        // }
 
 
-        [HttpPost]
-       public async Task <ActionResult<Product>> Update(  Product product )
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Update(int id, [FromBody] Product product)
         {
-             _productContext.Products.Add(product);
-           await _productContext.SaveChangesAsync();
+            if (id <= 0)
+                return BadRequest("Not a valid   id");
 
-            return CreatedAtAction(nameof(GetProductId), new {id= product.Id}, product);
-                      
-       }
-        [HttpPut("{id}")]
-        public async Task<ActionResult>UpdateProduct(int id, Product product) 
-        {
-            if (id!=product.Id)
+            FluentValidation.Results.ValidationResult validationResult = await _validator.ValidateAsync(product);
+            if (validationResult.IsValid)
             {
-                return BadRequest();
+                await   _productService.Update(id, product);
+                return Ok();
             }
-            _productContext.Entry(product).State = EntityState.Modified;
-            try
-            {
-                await _productContext.SaveChangesAsync();
-            }catch(Exception ex)
-            {
-                throw;
-            }
-            return Ok();
+            return StatusCode(StatusCodes.Status400BadRequest, validationResult.Errors);
         }
 
 

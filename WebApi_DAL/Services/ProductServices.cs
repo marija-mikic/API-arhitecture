@@ -12,13 +12,16 @@ namespace WebApi_DAL.Services
 {
 
 
-    public class ProductServices:IProductServices 
+    public class ProductServices : IProductServices
     {
         private readonly ProductContext context;
+
+
         public ProductServices(ProductContext context)
         {
             this.context = context;
         }
+
         public bool Add(Product model)
         {
             try
@@ -36,7 +39,7 @@ namespace WebApi_DAL.Services
         {
             try
             {
-                var data = this.GetById(Id);
+                var data = ((IProductServices)this).GetById(Id);
                 if (data == null)
                     return false;
                 context.Remove(data);
@@ -51,43 +54,51 @@ namespace WebApi_DAL.Services
 
         public async Task<IEnumerable<Product>> GetAll()
         {
-            if (context.Products == null)
-            {
-                return NotFound();
-
-            }
-            return await context.Products.ToListAsync();
+            return await context.Products
+                    .Select(p => new Product
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Title = p.Title,
+                        Description = p.Description
+                    })
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        private IEnumerable<Product> NotFound()
+
+
+        
+    
+
+
+
+        public async Task Update(int id,Product product)
         {
-            throw new NotImplementedException();
+            await context.Products
+                .Where(p => p.Id.Equals(id))
+                .ExecuteUpdateAsync(p =>
+                p.SetProperty(p => p.Name, p => product.Name)
+                .SetProperty(p => p.Title, p => product.Title)
+                .SetProperty(p => p.Description, p => product.Description)); 
         }
 
-        public Product GetById(int Id)
+        public async Task<Product>GetById(int id)
         {
-            return context.Products.Find(Id);
-        }
+            return await context.Products
+                .Select(p => new Product
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Title = p.Title,
+                    Description = p.Description
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x=>x.Id==id);
 
 
 
-        public async Task  Update(int id)
-        {
-             
-                var data = this.GetById(id);
-                if (data == null)
-
-                    context.Update(id);
-                context.SaveChanges();
-
-            
-          
-        }
-
-
-
-
-
+        }   
     }
 
 }
