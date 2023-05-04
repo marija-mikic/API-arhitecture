@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Services.WebApi;
+using Newtonsoft.Json;
+using PagedList;
 using WebApi_DAL;
 using WebApi_DAL.Models;
 using WebApi_DAL.Pagination;
@@ -17,24 +18,34 @@ namespace WebApi.Controllers
         private readonly IProductServices _productService;
         private readonly ProductContext _productContext;
         private readonly IValidator<Product> _validator;
+        
+         
 
 
-        public ProductController(IProductServices productService, ProductContext productContext, IValidator<Product> validator )
-        {
+        public ProductController(IProductServices productService, ProductContext productContext, IValidator<Product> validator)
+        { 
             _productService = productService; 
             _productContext = productContext;
             _validator = validator;
+            
+             
+            
         }
         [HttpGet(nameof(GetProducts))]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts([FromQuery]Paging paging)
         {
-            var products = await _productService.GetAll();
+            
+            var products = await _productService.GetAll(paging);
+             
             if (_productService == null)
             {
                 return NotFound();
 
             }
-            return Ok(products);
+            var productPage  = JsonConvert.SerializeObject(products);
+             
+
+            return Ok(productPage);
         }
         
 

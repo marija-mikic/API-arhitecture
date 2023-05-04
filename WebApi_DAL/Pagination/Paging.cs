@@ -13,7 +13,7 @@ namespace WebApi_DAL.Pagination
         {
           public int maxPageSize = 5;
           public int PageNumber { get; set; } = 1;
-           private int _pageSize = 10;
+           private int _pageSize = 3;
 
            public int PageSize
         {

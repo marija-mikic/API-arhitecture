@@ -7,6 +7,8 @@ using WebApi_DAL.Repository;
 using WebApi_DAL.Services;
 using WebApi_BAL.Validator;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using WebApi_DAL.Pagination;
+using Microsoft.VisualStudio.Services.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,9 @@ optionsBuilder => optionsBuilder.MigrationsAssembly("WebApi_DAL")));
 
  
 builder.Services.AddScoped<IProductServices, ProductServices>();
-builder.Services.AddScoped<IValidator<Product>, ProductValidator>(); 
+builder.Services.AddScoped<IValidator<Product>, ProductValidator>();
+
+ 
 
 var app = builder.Build();
 

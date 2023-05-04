@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using System.Reflection.Metadata.Ecma335;
 using WebApi_DAL.Models;
+using WebApi_DAL.Pagination;
 using WebApi_DAL.Repository;
+ 
 
 namespace WebApi_DAL.Services
 {
@@ -10,11 +12,15 @@ namespace WebApi_DAL.Services
     public class ProductServices : IProductServices
     {
         private readonly ProductContext context;
+       
+         
 
 
         public ProductServices(ProductContext context)
         {
             this.context = context;
+             
+           
         }
 
         public bool Add(Product model)
@@ -47,7 +53,7 @@ namespace WebApi_DAL.Services
             }
         }
 
-        public async Task<IEnumerable<Product>> GetAll()
+        public async Task<IEnumerable<Product>> GetAll(Paging paging)
         {
             return await context.Products
                     .Select(p => new Product
@@ -59,7 +65,9 @@ namespace WebApi_DAL.Services
                     })
                 .AsNoTracking()
                 .ToListAsync();
-        }
+
+         }
+        
 
 
 
