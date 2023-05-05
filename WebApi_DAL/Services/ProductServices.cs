@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 using WebApi_DAL.Models;
 using WebApi_DAL.Pagination;
 using WebApi_DAL.Repository;
@@ -53,7 +52,7 @@ namespace WebApi_DAL.Services
             }
         }
 
-        public async Task<IEnumerable<Product>> GetAll(Paging paging)
+        public async Task<PagedList<Product>> GetAll(Paging paging)
         {
             return await context.Products
                     .Select(p => new Product
@@ -66,12 +65,11 @@ namespace WebApi_DAL.Services
                 .AsNoTracking()
                 .ToListAsync();
 
+            return PagedList<Product>.ToPagedList(paging.PageSize, paging.maxPageSize);
+             
+
          }
-        
-
-
-
-        
+             
     
 
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.Services.WebApi;
-using PagedList;
 using WebApi_DAL.Models;
 using WebApi_DAL.Pagination;
 
