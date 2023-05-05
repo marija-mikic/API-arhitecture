@@ -54,7 +54,7 @@ namespace WebApi_DAL.Services
 
         public async Task<PagedList<Product>> GetAll(Paging paging)
         {
-            return await context.Products
+              await context.Products
                     .Select(p => new Product
                     {
                         Id = p.Id,
