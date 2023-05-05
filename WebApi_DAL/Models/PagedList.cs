@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApi_DAL.Models
 {
-    internal class PagedList<T> : List<T>
+    public class PagedList<T> : List<T>
     {
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }  
@@ -33,7 +33,7 @@ namespace WebApi_DAL.Models
 
         }
 
-        public static PagedList<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+        public static PagedList<T> ToPagedList(List<T> source, int pageNumber, int pageSize)
         {
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();

@@ -54,18 +54,18 @@ namespace WebApi_DAL.Services
 
         public async Task<PagedList<Product>> GetAll(Paging paging)
         {
-              await context.Products
-                    .Select(p => new Product
-                    {
-                        Id = p.Id,
-                        Name = p.Name,
-                        Title = p.Title,
-                        Description = p.Description
-                    })
-                .AsNoTracking()
-                .ToListAsync();
+            var list = await context.Products
+                  .Select(p => new Product
+                  {
+                      Id = p.Id,
+                      Name = p.Name,
+                      Title = p.Title,
+                      Description = p.Description
+                  })
+              .AsNoTracking()
+              .ToListAsync();
 
-            return PagedList<Product>.ToPagedList(paging.PageSize, paging.maxPageSize);
+            return PagedList<Product>.ToPagedList(list, paging.PageSize, paging.maxPageSize);
              
 
          }

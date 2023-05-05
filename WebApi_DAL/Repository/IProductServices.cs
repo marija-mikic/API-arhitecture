@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.Services.WebApi;
+﻿//using Microsoft.VisualStudio.Services.WebApi;
 using WebApi_DAL.Models;
 using WebApi_DAL.Pagination;
 
@@ -6,7 +6,7 @@ namespace WebApi_DAL.Repository
 {
     public interface IProductServices
     {
-        Task<IEnumerable<Product>> GetAll(Paging paging);
+        public Task<PagedList<Product>> GetAll(Paging paging);
         bool Add(Product model);
 
         bool Delete(int Id);

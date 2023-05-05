@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Services.WebApi;
 using Newtonsoft.Json;
-using PagedList;
 using WebApi_DAL;
 using WebApi_DAL.Models;
 using WebApi_DAL.Pagination;
