@@ -65,13 +65,8 @@ namespace WebApi_DAL.Services
               .AsNoTracking()
               .ToListAsync();
 
-            return PagedList<Product>.ToPagedList(list, paging.PageSize, paging.maxPageSize);
-             
-
+            return PagedList<Product>.ToPagedList(list, paging.PageNumber, paging.PageSize);
          }
-             
-    
-
 
 
         public async Task Update(int id,Product product)

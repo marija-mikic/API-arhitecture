@@ -35,7 +35,6 @@ namespace WebApi.Controllers
         {
             
             var products = await _productService.GetAll(paging);
-             
             if (_productService == null)
             {
                 return NotFound();
